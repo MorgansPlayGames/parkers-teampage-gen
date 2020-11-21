@@ -13,7 +13,6 @@ const render = require("./lib/htmlRenderer");
 
 let questionIndex = 'newPage';
 let quitCheck = true;
-let webpage;
 let employeeType = 'manager'
 let employeeList = []
 let currentEmployee = {}
@@ -98,6 +97,11 @@ function here(){
 // generate and return a block of HTML including templated divs for each employee!
 function onEnd(){
     console.log(employeeList);
+    rend = render(employeeList)
+    fs.writeFile(outputPath, rend, (err) => {
+        if(err) throw err;
+        console.log('success')
+    })
 }
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
