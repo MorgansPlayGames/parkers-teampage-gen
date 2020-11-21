@@ -1,7 +1,7 @@
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
-const Q = require("./lib/Q.js")
+const q = require("./lib/Q.js")
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
@@ -11,23 +11,63 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+let questionIndex = 'newPage';
+let quitCheck = true;
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 function question(ask){
     inquirer
-    .prompt(
-        ask
-        /* Pass your questions in here */
-    )
+    .prompt(ask)
     .then(answers => {
         // Use user feedback for... whatever!!
+        theSwitch(answers);
     })
     .catch(err => {
         if(err) {
         // Prompt couldn't be rendered in the current environment
         } 
     });
+}
+function theSwitch(answers){
+    if(quitCheck != false){
+        switch(questionIndex){
+            case 'newPage':
+                if(answers.newPage = true){
+                    questionIndex = 'managerCheck';
+                    question(q.managerCheck);
+                }else{
+                quitCheck = false;
+                }
+                break;
+            case 'managerCheck':
+                if(answers.manager === true){
+                    questionIndex = 'newEmployee';
+                    question(q.manager);
+                }else quitCheck = false;
+                break;
+            case 'newEmployee':
+                if(answers.newEmployee === true){
+                    questionIndex = 'employeeType'
+                    question(q.employeeType);
+                }else quitCheck = false;
+                break;
+            case 'employeeType':
+                if(answers.employeeType = 'Engineer'){
+                    question(q.engineer);
+                }else{
+                    question(q.intern);
+                }
+                questionIndex = 'newEmployee'
+                break;
+        }        
+    }
+}
+
+    question(q.newPage);
+
+function here(){
+    console.log('here');
 }
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
