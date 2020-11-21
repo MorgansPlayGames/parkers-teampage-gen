@@ -13,6 +13,10 @@ const render = require("./lib/htmlRenderer");
 
 let questionIndex = 'newPage';
 let quitCheck = true;
+let webpage;
+let employeeType = 'manager'
+let employeeList = []
+let currentEmployee = {}
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
@@ -25,54 +29,76 @@ function question(ask){
     })
     .catch(err => {
         if(err) {
-        // Prompt couldn't be rendered in the current environment
+        console.log(err)
         } 
     });
 }
+
+//main question logic function what to do with answers passed in
 function theSwitch(answers){
     if(quitCheck != false){
+        //what to do with the response of:
         switch(questionIndex){
             case 'newPage':
-                if(answers.newPage = true){
+                if(answers.newPage === true){
                     questionIndex = 'managerCheck';
                     question(q.managerCheck);
-                }else{
-                quitCheck = false;
-                }
+                //quit out of loop
+                }else onEnd();
                 break;
             case 'managerCheck':
                 if(answers.manager === true){
                     questionIndex = 'newEmployee';
                     question(q.manager);
-                }else quitCheck = false;
+                //quit out of loop
+                }else onEnd();
                 break;
+            //runs over the questions for filling out the html
             case 'newEmployee':
+                //creates a new class with the new employee info passed in
+                if(employeeType === 'manager'){
+                    currentEmployee = new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
+                }else if(employeeType === 'engineer'){
+                    currentEmployee = new Engineer(answers.name, answers.id, answers.email, answers.github);
+                }else if(employeeType === 'intern'){
+                    currentEmployee = new Intern(answers.name, answers.id, answers.email, answers.school);
+                }
+                employeeList.push(currentEmployee);
+                //employee check passed down from newEmployee
                 if(answers.newEmployee === true){
                     questionIndex = 'employeeType'
                     question(q.employeeType);
-                }else quitCheck = false;
+                //quit out of loop
+                }else onEnd();
                 break;
             case 'employeeType':
-                if(answers.employeeType = 'Engineer'){
+                //checks the type and gets the questions of the type
+                if(answers.employeeType === 'Engineer'){
                     question(q.engineer);
+                    employeeType = 'engineer';
                 }else{
                     question(q.intern);
+                    employeeType = 'intern';
                 }
                 questionIndex = 'newEmployee'
                 break;
-        }        
+        }      
+    //on finish  
     }
 }
+//start the loop on script start
+question(q.newPage);
 
-    question(q.newPage);
-
+//test function
 function here(){
     console.log('here');
 }
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
-
+function onEnd(){
+    console.log(employeeList);
+}
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
 // `output` folder. You can use the variable `outputPath` above target this location.
