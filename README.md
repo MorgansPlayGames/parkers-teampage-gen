@@ -1,9 +1,11 @@
 # parkers-teampage-gen
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[Link to repository]()
+[Link to repository](https://github.com/MorgansPlayGames/parkers-teampage-gen)
 
-[Video of parkers-teampage-gen in action]()
+[Video of parkers-teampage-gen in action](https://drive.google.com/file/d/1MQSidvhhWsJDq3BGF4MOULjoQKBhZr7Z/view)
+
+![image](/images/example.png)
 
 1. [ Description. ](#description)
 2. [ Installation ](#installation-instructions)
